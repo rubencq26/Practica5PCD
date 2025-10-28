@@ -17,10 +17,34 @@ public class ElectricCar extends Thread{
         type = 'C';
     }
     
+    
+    public int getIdent(){
+        return id;
+    }
+    
     @Override
     public void run(){
         
     }
     
-    
+    @Override
+    public boolean equals(Object obj){
+        if(this == obj){
+            return true;
+        }
+        
+
+        if(obj == null){
+            return false;
+        }
+        
+        if(getClass() != obj.getClass()){
+            return false;
+        }
+       
+        final ElectricCar other = (ElectricCar) obj;
+        
+        return this.id == other.id;
+        
+    }
 }
