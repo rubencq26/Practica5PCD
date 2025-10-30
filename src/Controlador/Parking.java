@@ -22,6 +22,7 @@ public class Parking {
     private int filledSpaces;
     private int nElectricQueue;
     private int nFuelQueue;
+    private int nFuelPark;
     
     private List<Object> parking;
     private boolean [] parkingCheck;
@@ -33,6 +34,7 @@ public class Parking {
         filledSpaces = 0;
         nElectricQueue = 0;
         nFuelQueue = 0;
+        nFuelPark = 0; 
         
         parking = new ArrayList<>();
         parkingCheck = new boolean [6];
@@ -68,8 +70,50 @@ public class Parking {
     }
     
     public synchronized void saleElectrico(ElectricCar electricCar){
+        for(int i = 0; i < nSpaces; i++){
+            if(parking.get(i).equals(electricCar)){
+                parking.set(i, new Object());
+                filledSpaces--;
+            }
+        }
+        notifyAll();
         
     }
+    
+    public synchronized void entraCombustion(FuelCar fuelCar) throws InterruptedException{
+        fuelQueue.add(fuelCar);
+        nFuelQueue++;
+        
+        while(filledSpaces == nSpaces || !fuelQueue.peek().equals(fuelCar) || (!electricQueue.isEmpty() && nFuelPark >= 2)){
+            wait();
+        }
+        
+        
+        
+        for(int i = 0; i < nSpaces; i++){
+            if(!parkingCheck[i]){
+                fuelQueue.poll();
+                nFuelQueue--;
+                parking.set(i, fuelCar);
+                filledSpaces++;
+                parkingCheck[i] = true;
+                return;
+            }
+        }
+    }
+    
+    
+    public synchronized void saleCombustion(FuelCar fuelCar){
+        for(int i = 0; i < nSpaces; i++){
+            if(parking.get(i).equals(fuelCar)){
+                parking.set(i, new Object());
+                filledSpaces--;
+            }
+        }
+        notifyAll();
+        
+    }
+    
     
     public boolean isInQueue(Object obj){
         

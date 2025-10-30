@@ -11,10 +11,15 @@ package Modelo;
 public class FuelCar implements Runnable{
     
     int id;
-    char tipo;
+    char type;
     public FuelCar(int id){
         this.id = id;
-        tipo = 'C';
+        type = 'F';
+    }
+    
+    public FuelCar(){
+        this.id = -1;
+        type = 'F';
     }
     
     @Override
@@ -22,4 +27,25 @@ public class FuelCar implements Runnable{
         
     }
     
+    
+     @Override
+    public boolean equals(Object obj){
+        if(this == obj){
+            return true;
+        }
+        
+
+        if(obj == null){
+            return false;
+        }
+        
+        if(getClass() != obj.getClass()){
+            return false;
+        }
+       
+        final FuelCar other = (FuelCar) obj;
+        
+        return this.id == other.id;
+        
+    }
 }

@@ -14,7 +14,12 @@ public class ElectricCar extends Thread{
     char type;
     public ElectricCar(int id){
         this.id = id;
-        type = 'C';
+        type = 'E';
+    }
+    
+    public ElectricCar(){
+        id = -1;
+        type = 'E';
     }
     
     
