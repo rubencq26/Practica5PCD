@@ -7,7 +7,9 @@ package Main;
 import Controlador.Parking;
 import Modelo.ElectricCar;
 import Modelo.FuelCar;
+import Vista.CarsPanel;
 import Vista.Ventana;
+
 import java.util.Random;
 
 /**
@@ -25,9 +27,11 @@ public class Generador {
         
         Random rd = new Random(System.currentTimeMillis());
         Thread [] cars = new Thread[30];
-        Parking parking = new Parking();
-        Ventana ven = new Ventana(parking);
-        /*
+        CarsPanel carsPanel = new CarsPanel();
+        Parking parking = new Parking(carsPanel);
+        carsPanel.setParking(parking);
+        Ventana ven = new Ventana(carsPanel);
+        
         for(int i = 0; i < 30; i++){
             if(rd.nextInt(1000) < 500){
                 cars[i] = new ElectricCar(i+1,parking);
@@ -45,7 +49,7 @@ public class Generador {
         for(int i = 0; i < 30; i++){
             cars[i].join();
         }
-        */
+        
         
     }
     

@@ -7,32 +7,43 @@ package Vista;
 import Controlador.Parking;
 import java.awt.Dimension;
 import javax.swing.JFrame;
+import javax.swing.JLayeredPane;
 
 /**
  *
  * @author rubco
  */
 public class Ventana extends javax.swing.JFrame {
-    
+
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(Ventana.class.getName());
 
     private Parking parking;
-    
+    private CarsPanel carsPanel;
+
     /**
      * Creates new form Ventana
      */
-    public Ventana(Parking park) {
+    public Ventana(CarsPanel carsPanel) {
         initComponents();
-        setPreferredSize(new Dimension(1014, 736));
-        System.out.println(getWidth());
-        System.out.println(getHeight());
+
+        JLayeredPane layeredPane = new JLayeredPane();
+        layeredPane.setPreferredSize(new Dimension(1000, 700));
+        setContentPane(layeredPane);
+
+        ParkingPanel panelPark = new ParkingPanel();
+        panelPark.setBounds(0, 0, 1000, 700);
+        layeredPane.add(panelPark, JLayeredPane.DEFAULT_LAYER);
+
+        this.carsPanel = carsPanel;
+        carsPanel.setOpaque(false); 
+        carsPanel.setBounds(0, 0, 1000, 700); 
+        layeredPane.add(carsPanel, JLayeredPane.PALETTE_LAYER);
+        
         setLocationRelativeTo(null);
-        ParkingPanel panelPark = new ParkingPanel(park);
-        panelPark.setBounds(0,0, getWidth(), getHeight());
-        add(panelPark);
-        pack();
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        pack(); 
         setVisible(true);
+
     }
 
     /**
@@ -64,7 +75,6 @@ public class Ventana extends javax.swing.JFrame {
     /**
      * @param args the command line arguments
      */
-    
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     // End of variables declaration//GEN-END:variables

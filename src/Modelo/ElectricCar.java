@@ -39,7 +39,7 @@ public class ElectricCar extends Thread{
         try {
             parking.entraElectrico(this);
             
-            sleep(rd.nextInt(6000));
+            sleep(rd.nextInt(60000));
             
             parking.saleElectrico(this);
             

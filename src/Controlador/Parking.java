@@ -6,6 +6,7 @@ package Controlador;
 
 import Modelo.FuelCar;
 import Modelo.ElectricCar;
+import Vista.CarsPanel;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
@@ -64,8 +65,9 @@ public class Parking {
     private final boolean [] parkingCheck;
     private final Queue<ElectricCar> electricQueue;
     private final Queue<FuelCar> fuelQueue;
+    private final CarsPanel carsPanel;
     
-    public Parking(){
+    public Parking(CarsPanel carsPanel){
         nSpaces = 6;
         filledSpaces = 0;
         nElectricQueue = 0;
@@ -76,8 +78,10 @@ public class Parking {
         parkingCheck = new boolean [6];
         electricQueue = new LinkedList<>();
         fuelQueue = new LinkedList<>();
+        this.carsPanel = carsPanel;
         for(int i = 0; i < nSpaces; i++){
             parkingCheck[i] = false;
+            parking.add(i, new Object());
         }
     }
     
@@ -85,7 +89,7 @@ public class Parking {
         
         electricQueue.add(electricCar);
         nElectricQueue++;
-        
+        carsPanel.repaint();
         while(filledSpaces == nSpaces || !electricQueue.peek().equals(electricCar)){
             wait();
         }
@@ -99,6 +103,7 @@ public class Parking {
                 parking.set(i, electricCar);
                 filledSpaces++;
                 parkingCheck[i] = true;
+                carsPanel.repaint();
                 return;
             }
         }
@@ -110,16 +115,17 @@ public class Parking {
             if(parking.get(i).equals(electricCar)){
                 parking.set(i, new Object());
                 filledSpaces--;
+                parkingCheck[i] = false;
             }
         }
         notifyAll();
-        
+        carsPanel.repaint();
     }
     
     public synchronized void entraCombustion(FuelCar fuelCar) throws InterruptedException{
         fuelQueue.add(fuelCar);
         nFuelQueue++;
-        
+        carsPanel.repaint();
         while(filledSpaces == nSpaces || !fuelQueue.peek().equals(fuelCar) || (!electricQueue.isEmpty() && nFuelPark >= 2)){
             wait();
         }
@@ -133,6 +139,7 @@ public class Parking {
                 parking.set(i, fuelCar);
                 filledSpaces++;
                 parkingCheck[i] = true;
+                carsPanel.repaint();
                 return;
             }
         }
@@ -144,10 +151,11 @@ public class Parking {
             if(parking.get(i).equals(fuelCar)){
                 parking.set(i, new Object());
                 filledSpaces--;
+                parkingCheck[i] = false;
             }
         }
         notifyAll();
-        
+        carsPanel.repaint();
     }
     
     

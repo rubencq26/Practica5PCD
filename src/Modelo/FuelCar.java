@@ -35,7 +35,7 @@ public class FuelCar implements Runnable{
         try {
             parking.entraCombustion(this);
             
-            Thread.sleep(rd.nextInt(6000));
+            Thread.sleep(rd.nextInt(60000));
             
             parking.saleCombustion(this);
             

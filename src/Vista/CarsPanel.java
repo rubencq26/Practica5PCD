@@ -5,34 +5,46 @@
 package Vista;
 
 import Controlador.Parking;
-import java.awt.Color;
+import Modelo.ElectricCar;
 import java.awt.Dimension;
-import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.RenderingHints;
-import javax.swing.JLabel;
+import javax.swing.ImageIcon;
 
 /**
  *
  * @author rubco
  */
-public class ParkingPanel extends javax.swing.JPanel {
+public class CarsPanel extends javax.swing.JPanel {
 
     /**
-     * Creates new form parkingPanel
+     * Creates new form CarsPanel
      */
     
-
-    public ParkingPanel() {
+    private Parking parking;
+    private final Image fuelImage;
+    private final Image electricImage;  
+            
+    public CarsPanel() {
         initComponents();
+        setOpaque(false);
+        setPreferredSize(new Dimension(1000, 700));
+        fuelImage = new ImageIcon(getClass().getResource("/imagenes/rayo.png")).getImage();
+        electricImage = new ImageIcon(getClass().getResource("/imagenes/cocheElectrico.png")).getImage();
         
-        repaint();
+        repaint();   
     }
-
+    
+    public void setParking(Parking park){
+        parking = park;
+    }
+    
+    
     @Override
-    protected void paintComponent(Graphics g) {
+    protected void paintComponent(Graphics g){
+        
         super.paintComponent(g);
         setPreferredSize(new Dimension(1000, 700));
 
@@ -41,42 +53,23 @@ public class ParkingPanel extends javax.swing.JPanel {
                 RenderingHints.KEY_ANTIALIASING,
                 RenderingHints.VALUE_ANTIALIAS_ON
         );
-        g2d.setColor(new Color(111, 111, 111));
-        g2d.fillRect(0, 0, 1000, 300);
-        g2d.fillRect(387, 300, 240, 400);
-        g2d.fillRect(0, 550, 1000, 150);
-        g2d.setColor(Color.LIGHT_GRAY);
-        g2d.fillRect(0, 0, 1000, 15);
-        g2d.fillRect(0, 300, 395, 15);
-        g2d.fillRect(619, 300, 395, 15);
-        g2d.fillRect(395, 300, 15, 265);
-        g2d.fillRect(500, 300, 15, 400);
-        g2d.fillRect(604, 300, 15, 265);
-        g2d.fillRect(0, 550, 395, 15);
-        g2d.fillRect(619, 550, 395, 15);
-        final int ANCHO_LINEA = 15;
-        int x_posicion = 0;
-
-
-        for (int i = 0; i < 5; i++) {
-            int ANCHO_PLAZA;
-            if (i % 2 == 0) {
-                ANCHO_PLAZA = 157;
-            } else {
-                ANCHO_PLAZA = 156;
+        
+        int posImagen = 20;
+        for(int i = 0; i < 6; i++){
+            if(!parking.getParkingCheck()[i]){
+                continue;
             }
-
-            x_posicion += ANCHO_PLAZA;
-
-      
-            g2d.fillRect(x_posicion, 0, ANCHO_LINEA, 270);
-            x_posicion += ANCHO_LINEA;
+            if(parking.getParking().get(i) instanceof ElectricCar){
+                g2d.drawImage(electricImage, 20 + (165 * i), 10, 140, 270, this);
+            }else{
+                g2d.drawImage(fuelImage, 20 + (165 * i), 10, 140, 270, this);
+            }
         }
         
-        g2d.setColor(new Color(101, 161, 100));
-        g2d.fillRect(0, 315, 387, 235);
-        g2d.fillRect(627, 315, 387, 235);
     }
+    
+    
+    
 
     /**
      * This method is called from within the constructor to initialize the form.
