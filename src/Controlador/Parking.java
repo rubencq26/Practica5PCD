@@ -25,9 +25,45 @@ public class Parking {
     private int nFuelPark;
     
     private List<Object> parking;
-    private boolean [] parkingCheck;
-    private Queue<ElectricCar> electricQueue;
-    private Queue<FuelCar> fuelQueue;
+
+    public int getnSpaces() {
+        return nSpaces;
+    }
+
+    public int getFilledSpaces() {
+        return filledSpaces;
+    }
+
+    public int getnElectricQueue() {
+        return nElectricQueue;
+    }
+
+    public int getnFuelQueue() {
+        return nFuelQueue;
+    }
+
+    public int getnFuelPark() {
+        return nFuelPark;
+    }
+
+    public List<Object> getParking() {
+        return parking;
+    }
+
+    public boolean[] getParkingCheck() {
+        return parkingCheck;
+    }
+
+    public Queue<ElectricCar> getElectricQueue() {
+        return electricQueue;
+    }
+
+    public Queue<FuelCar> getFuelQueue() {
+        return fuelQueue;
+    }
+    private final boolean [] parkingCheck;
+    private final Queue<ElectricCar> electricQueue;
+    private final Queue<FuelCar> fuelQueue;
     
     public Parking(){
         nSpaces = 6;

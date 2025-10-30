@@ -4,6 +4,9 @@
  */
 package Modelo;
 
+import Controlador.Parking;
+import java.util.Random;
+
 /**
  *
  * @author rubco
@@ -12,14 +15,17 @@ public class ElectricCar extends Thread{
     
     int id;
     char type;
-    public ElectricCar(int id){
+    Parking parking;
+    public ElectricCar(int id, Parking park){
         this.id = id;
         type = 'E';
+        parking = park;
     }
     
     public ElectricCar(){
         id = -1;
         type = 'E';
+        parking= null;
     }
     
     
@@ -29,6 +35,17 @@ public class ElectricCar extends Thread{
     
     @Override
     public void run(){
+        Random rd = new Random(System.nanoTime());
+        try {
+            parking.entraElectrico(this);
+            
+            sleep(rd.nextInt(6000));
+            
+            parking.saleElectrico(this);
+            
+        } catch (InterruptedException ex) {
+            System.getLogger(ElectricCar.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
+        }
         
     }
     

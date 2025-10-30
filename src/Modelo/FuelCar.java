@@ -4,27 +4,44 @@
  */
 package Modelo;
 
+import Controlador.Parking;
+import java.util.Random;
+
 /**
  *
  * @author rubco
  */
 public class FuelCar implements Runnable{
     
-    int id;
-    char type;
-    public FuelCar(int id){
+    private final int id;
+    private final char type;
+    private final Parking parking;
+    public FuelCar(int id, Parking park){
         this.id = id;
         type = 'F';
+        parking = park;
     }
     
     public FuelCar(){
         this.id = -1;
         type = 'F';
+        parking= null;
     }
     
     @Override
     public void run(){
+        Random rd = new Random(System.nanoTime());
         
+        try {
+            parking.entraCombustion(this);
+            
+            Thread.sleep(rd.nextInt(6000));
+            
+            parking.saleCombustion(this);
+            
+        } catch (InterruptedException ex) {
+            System.getLogger(FuelCar.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
+        }
     }
     
     
