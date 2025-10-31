@@ -24,7 +24,7 @@ public class Parking {
     private int nElectricQueue;
     private int nFuelQueue;
     private int nFuelPark;
-    
+
     private List<Object> parking;
 
     public int getnSpaces() {
@@ -62,44 +62,43 @@ public class Parking {
     public Queue<FuelCar> getFuelQueue() {
         return fuelQueue;
     }
-    private final boolean [] parkingCheck;
+    private final boolean[] parkingCheck;
     private final Queue<ElectricCar> electricQueue;
     private final Queue<FuelCar> fuelQueue;
     private final CarsPanel carsPanel;
-    
-    public Parking(CarsPanel carsPanel){
+
+    public Parking(CarsPanel carsPanel) {
         nSpaces = 6;
         filledSpaces = 0;
         nElectricQueue = 0;
         nFuelQueue = 0;
-        nFuelPark = 0; 
-        
+        nFuelPark = 0;
+
         parking = new ArrayList<>();
-        parkingCheck = new boolean [6];
+        parkingCheck = new boolean[6];
         electricQueue = new LinkedList<>();
         fuelQueue = new LinkedList<>();
         this.carsPanel = carsPanel;
-        for(int i = 0; i < nSpaces; i++){
+        for (int i = 0; i < nSpaces; i++) {
             parkingCheck[i] = false;
             parking.add(i, new Object());
         }
     }
-    
-    public synchronized void entraElectrico(ElectricCar electricCar) throws InterruptedException{
-        
+
+    public synchronized void entraElectrico(ElectricCar electricCar) throws InterruptedException {
+
         electricQueue.add(electricCar);
         nElectricQueue++;
         carsPanel.repaint();
-        while(filledSpaces == nSpaces || !electricQueue.peek().equals(electricCar)){
+        while (filledSpaces == nSpaces || !electricQueue.peek().equals(electricCar)) {
             wait();
         }
-        
-        
-        
-        for(int i = 0; i < nSpaces; i++){
-            if(!parkingCheck[i]){
-                electricQueue.poll();
-                nElectricQueue--;
+
+        electricQueue.poll();
+        nElectricQueue--;
+        for (int i = 0; i < nSpaces; i++) {
+            if (!parkingCheck[i]) {
+
                 parking.set(i, electricCar);
                 filledSpaces++;
                 parkingCheck[i] = true;
@@ -107,12 +106,12 @@ public class Parking {
                 return;
             }
         }
-        
+
     }
-    
-    public synchronized void saleElectrico(ElectricCar electricCar){
-        for(int i = 0; i < nSpaces; i++){
-            if(parking.get(i).equals(electricCar)){
+
+    public synchronized void saleElectrico(ElectricCar electricCar) {
+        for (int i = 0; i < nSpaces; i++) {
+            if (parking.get(i).equals(electricCar)) {
                 parking.set(i, new Object());
                 filledSpaces--;
                 parkingCheck[i] = false;
@@ -121,69 +120,64 @@ public class Parking {
         notifyAll();
         carsPanel.repaint();
     }
-    
-    public synchronized void entraCombustion(FuelCar fuelCar) throws InterruptedException{
+
+    public synchronized void entraCombustion(FuelCar fuelCar) throws InterruptedException {
         fuelQueue.add(fuelCar);
         nFuelQueue++;
         carsPanel.repaint();
-        while(filledSpaces == nSpaces || !fuelQueue.peek().equals(fuelCar) || (!electricQueue.isEmpty() && nFuelPark >= 2)){
+        while (filledSpaces == nSpaces || !fuelQueue.peek().equals(fuelCar) || (!electricQueue.isEmpty() && nFuelPark >= 2)) {
             wait();
         }
-        
-        
-        
-        for(int i = 0; i < nSpaces; i++){
-            if(!parkingCheck[i]){
-                fuelQueue.poll();
-                nFuelQueue--;
+
+        fuelQueue.poll();
+        nFuelQueue--;
+        for (int i = 0; i < nSpaces; i++) {
+            if (!parkingCheck[i]) {
+
                 parking.set(i, fuelCar);
                 filledSpaces++;
                 parkingCheck[i] = true;
                 carsPanel.repaint();
+                nFuelPark++;
                 return;
             }
         }
     }
-    
-    
-    public synchronized void saleCombustion(FuelCar fuelCar){
-        for(int i = 0; i < nSpaces; i++){
-            if(parking.get(i).equals(fuelCar)){
+
+    public synchronized void saleCombustion(FuelCar fuelCar) {
+        for (int i = 0; i < nSpaces; i++) {
+            if (parking.get(i).equals(fuelCar)) {
                 parking.set(i, new Object());
                 filledSpaces--;
                 parkingCheck[i] = false;
+                nFuelPark--;
             }
         }
         notifyAll();
         carsPanel.repaint();
     }
-    
-    
-    public boolean isInQueue(Object obj){
-        
-        if(obj.getClass() == ElectricCar.class){
-            
-            for(int i = 0; i < nElectricQueue; i++){
-                if(electricQueue.contains(obj)){
+
+    public boolean isInQueue(Object obj) {
+
+        if (obj.getClass() == ElectricCar.class) {
+
+            for (int i = 0; i < nElectricQueue; i++) {
+                if (electricQueue.contains(obj)) {
                     return true;
                 }
             }
-        }else{
-            for(int i = 0; i < nFuelQueue ; i++){
-                if(fuelQueue.contains(obj)){
+        } else {
+            for (int i = 0; i < nFuelQueue; i++) {
+                if (fuelQueue.contains(obj)) {
                     return true;
                 }
             }
         }
         return false;
     }
-    
-    public boolean isFull(){
+
+    public boolean isFull() {
         return (filledSpaces == 6);
     }
-    
-    
-    
-    
-            
+
 }

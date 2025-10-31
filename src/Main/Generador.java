@@ -24,33 +24,33 @@ public class Generador {
      */
     public static void main(String[] args) throws InterruptedException {
         // TODO code application logic here
-        
+
         Random rd = new Random(System.currentTimeMillis());
-        Thread [] cars = new Thread[30];
+        Thread[] cars = new Thread[30];
         CarsPanel carsPanel = new CarsPanel();
         Parking parking = new Parking(carsPanel);
         carsPanel.setParking(parking);
         Ventana ven = new Ventana(carsPanel);
-        
-        for(int i = 0; i < 30; i++){
-            if(rd.nextInt(1000) < 500){
-                cars[i] = new ElectricCar(i+1,parking);
+
+        for (int i = 0; i < 30; i++) {
+            if (rd.nextInt(1000) < 500) {
+                cars[i] = new ElectricCar(i + 1, parking);
                 cars[i].start();
-                
-            }else{
+
+            } else {
                 FuelCar fuel = new FuelCar(i + 1, parking);
                 cars[i] = new Thread(fuel);
                 cars[i].start();
             }
-            Thread.sleep(2000 + rd.nextInt(4000));
-            
+            Thread.sleep(1000 + rd.nextInt(1000));
+
         }
-        
-        for(int i = 0; i < 30; i++){
+
+        for (int i = 0; i < 30; i++) {
             cars[i].join();
         }
-        
-        
+
+        ven.dispose();
     }
-    
+
 }

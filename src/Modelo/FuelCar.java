@@ -11,58 +11,61 @@ import java.util.Random;
  *
  * @author rubco
  */
-public class FuelCar implements Runnable{
-    
+public class FuelCar implements Runnable {
+
     private final int id;
     private final char type;
     private final Parking parking;
-    public FuelCar(int id, Parking park){
+
+    public FuelCar(int id, Parking park) {
         this.id = id;
         type = 'F';
         parking = park;
     }
-    
-    public FuelCar(){
+
+    public FuelCar() {
         this.id = -1;
         type = 'F';
-        parking= null;
+        parking = null;
     }
-    
+
     @Override
-    public void run(){
+    public void run() {
         Random rd = new Random(System.nanoTime());
-        
+
         try {
             parking.entraCombustion(this);
-            
-            Thread.sleep(rd.nextInt(60000));
-            
+
+            Thread.sleep(2000 + rd.nextInt(6000));
+
             parking.saleCombustion(this);
-            
+
         } catch (InterruptedException ex) {
             System.getLogger(FuelCar.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
         }
     }
-    
-    
-     @Override
-    public boolean equals(Object obj){
-        if(this == obj){
+
+    public int getIdent() {
+        return id;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
             return true;
         }
-        
 
-        if(obj == null){
+        if (obj == null) {
             return false;
         }
-        
-        if(getClass() != obj.getClass()){
+
+        if (getClass() != obj.getClass()) {
             return false;
         }
-       
+
         final FuelCar other = (FuelCar) obj;
-        
+
         return this.id == other.id;
-        
+
     }
 }

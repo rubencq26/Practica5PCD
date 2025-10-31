@@ -23,11 +23,9 @@ public class ParkingPanel extends javax.swing.JPanel {
     /**
      * Creates new form parkingPanel
      */
-    
-
     public ParkingPanel() {
         initComponents();
-        
+
         repaint();
     }
 
@@ -57,7 +55,6 @@ public class ParkingPanel extends javax.swing.JPanel {
         final int ANCHO_LINEA = 15;
         int x_posicion = 0;
 
-
         for (int i = 0; i < 5; i++) {
             int ANCHO_PLAZA;
             if (i % 2 == 0) {
@@ -68,11 +65,10 @@ public class ParkingPanel extends javax.swing.JPanel {
 
             x_posicion += ANCHO_PLAZA;
 
-      
             g2d.fillRect(x_posicion, 0, ANCHO_LINEA, 270);
             x_posicion += ANCHO_LINEA;
         }
-        
+
         g2d.setColor(new Color(101, 161, 100));
         g2d.fillRect(0, 315, 387, 235);
         g2d.fillRect(627, 315, 387, 235);

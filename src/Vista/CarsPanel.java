@@ -6,7 +6,10 @@ package Vista;
 
 import Controlador.Parking;
 import Modelo.ElectricCar;
+import Modelo.FuelCar;
+import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
@@ -22,29 +25,30 @@ public class CarsPanel extends javax.swing.JPanel {
     /**
      * Creates new form CarsPanel
      */
-    
     private Parking parking;
     private final Image fuelImage;
-    private final Image electricImage;  
-            
+    private final Image electricImage;
+    private final Image electricImageR;
+    private final Image fuelImageR;
+
     public CarsPanel() {
         initComponents();
         setOpaque(false);
         setPreferredSize(new Dimension(1000, 700));
         fuelImage = new ImageIcon(getClass().getResource("/imagenes/rayo.png")).getImage();
         electricImage = new ImageIcon(getClass().getResource("/imagenes/cocheElectrico.png")).getImage();
-        
-        repaint();   
+        electricImageR = new ImageIcon(getClass().getResource("/imagenes/cocheElectricoR.png")).getImage();
+        fuelImageR = new ImageIcon(getClass().getResource("/imagenes/rayoR.png")).getImage();
+        repaint();
     }
-    
-    public void setParking(Parking park){
+
+    public void setParking(Parking park) {
         parking = park;
     }
-    
-    
+
     @Override
-    protected void paintComponent(Graphics g){
-        
+    protected void paintComponent(Graphics g) {
+
         super.paintComponent(g);
         setPreferredSize(new Dimension(1000, 700));
 
@@ -53,23 +57,49 @@ public class CarsPanel extends javax.swing.JPanel {
                 RenderingHints.KEY_ANTIALIASING,
                 RenderingHints.VALUE_ANTIALIAS_ON
         );
-        
+        g2d.setFont(new Font("Segoe UI", Font.BOLD, 18));
+        g2d.setColor(Color.WHITE);
         int posImagen = 20;
-        for(int i = 0; i < 6; i++){
-            if(!parking.getParkingCheck()[i]){
+        for (int i = 0; i < 6; i++) {
+            if (!parking.getParkingCheck()[i]) {
                 continue;
             }
-            if(parking.getParking().get(i) instanceof ElectricCar){
+            if (parking.getParking().get(i) instanceof ElectricCar) {
                 g2d.drawImage(electricImage, 20 + (165 * i), 10, 140, 270, this);
-            }else{
+                ElectricCar elCar = (ElectricCar) parking.getParking().get(i);
+                g2d.drawString("E" + elCar.getIdent(), 80 + (165 * i), 290);
+            } else {
                 g2d.drawImage(fuelImage, 20 + (165 * i), 10, 140, 270, this);
+                FuelCar fuCar = (FuelCar) parking.getParking().get(i);
+                g2d.drawString("C" + fuCar.getIdent(), 70 + (165 * i), 290);
             }
         }
-        
+
+        int contadorE = 0;
+        for (ElectricCar elec : parking.getElectricQueue()) {
+            if (contadorE < 2) {
+                g2d.drawImage(electricImage, 415, 300 + (125 * contadorE), 85, 125, this);
+                g2d.drawString("E" + elec.getIdent(), 440, 430 + (125 * contadorE));
+            } else {
+                g2d.drawImage(electricImageR, 375 - (125 * (contadorE - 2)), 570, 125, 85, this);
+                g2d.drawString("E" + elec.getIdent(), 420 - (135 * (contadorE - 2)), 650);
+            }
+            contadorE++;
+        }
+
+        int contadorF = 0;
+        for (FuelCar fuCar : parking.getFuelQueue()) {
+            if (contadorF < 2) {
+                g2d.drawImage(fuelImage, 515, 300 + (125 * contadorF), 85, 125, this);
+                g2d.drawString("C" + fuCar.getIdent(), 540, 430 + (125 * contadorF));
+            } else {
+                g2d.drawImage(fuelImageR, 515 + (125 * (contadorF - 2)), 570, 125, 85, this);
+                g2d.drawString("C" + fuCar.getIdent(), 550 + (135 * (contadorF - 2)), 650);
+            }
+            contadorF++;
+        }
+
     }
-    
-    
-    
 
     /**
      * This method is called from within the constructor to initialize the form.

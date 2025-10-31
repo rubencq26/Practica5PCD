@@ -14,9 +14,9 @@ import javax.swing.JLayeredPane;
  * @author rubco
  */
 public class Ventana extends javax.swing.JFrame {
-
+    
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(Ventana.class.getName());
-
+    
     private Parking parking;
     private CarsPanel carsPanel;
 
@@ -25,25 +25,25 @@ public class Ventana extends javax.swing.JFrame {
      */
     public Ventana(CarsPanel carsPanel) {
         initComponents();
-
+        setTitle("Parking");
         JLayeredPane layeredPane = new JLayeredPane();
         layeredPane.setPreferredSize(new Dimension(1000, 700));
         setContentPane(layeredPane);
-
+        
         ParkingPanel panelPark = new ParkingPanel();
         panelPark.setBounds(0, 0, 1000, 700);
         layeredPane.add(panelPark, JLayeredPane.DEFAULT_LAYER);
-
+        
         this.carsPanel = carsPanel;
-        carsPanel.setOpaque(false); 
-        carsPanel.setBounds(0, 0, 1000, 700); 
+        carsPanel.setOpaque(false);        
+        carsPanel.setBounds(0, 0, 1000, 700);        
         layeredPane.add(carsPanel, JLayeredPane.PALETTE_LAYER);
         
         setLocationRelativeTo(null);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        pack(); 
+        pack();        
         setVisible(true);
-
+        
     }
 
     /**
